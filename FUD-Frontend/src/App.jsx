@@ -44,6 +44,16 @@ function App() {
           <img src={`http://localhost:4000/${item.profilePic}`} alt={item._id}/>
         </div>;
       })}
+
+      <br></br>
+      <a href="http://localhost:4000/fileDownload">DownLoad File</a>
+      {/* <iframe
+            src="http://localhost:4000/fileDownload"
+            title="File Viewer"
+            width="100%"
+            height="500px"
+            style={{ border: 'none' }}
+        ></iframe> */}
     </div>
   );
 }
