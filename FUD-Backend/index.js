@@ -71,18 +71,29 @@ app.get('/getAllData',async(req,res,next)=>{
 app.get('/fileDownload',(req,res,next)=>{
     const fileName='2024-03-02T09-38-08.059Z-Resume_Qhairunnisa_Syed (4).pdf';
     const filePath= path.join('images',fileName);
-    fs.readFile(filePath,(err,data)=>{
-        if(err){
-            next(err);
-        }
-        // res.setHeader('Cache-Control', 'no-store');     
-        res.setHeader('Content-type','application/pdf');
 
-        res.setHeader('Content-disposition', 'inline; filename=' + fileName);
-        // inline will first show the file on the browser ad will options to download;
-        // attachement will directly give popup to download
-        res.send(data)
-    })
+    /// Preloading of File which is good for Small Files....
+
+    // fs.readFile(filePath,(err,data)=>{
+    //     if(err){
+    //         next(err);
+    //     }
+    //     // res.setHeader('Cache-Control', 'no-store');     
+    //     res.setHeader('Content-type','application/pdf');
+
+    //     res.setHeader('Content-disposition', 'inline; filename=' + fileName);
+    //     // inline will first show the file on the browser ad will options to download;
+    //     // attachement will directly give popup to download
+    //     res.send(data)
+    // })
+
+
+    /// Streaming of Files....
+    const file= fs.createReadStream(filePath);
+    res.setHeader('Content-Type','applictaion/pdf');
+    res.setHeader('Content-disposition', 'inline; filename=' + fileName);
+
+    file.pipe(res);
 })
 
 app.listen(4000, () => {
