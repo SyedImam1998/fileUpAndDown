@@ -43,7 +43,7 @@ app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("imamfile")
 );
 
-app.use('/images',express.static(path.join(__dirname, 'images'))); // path is imp
+app.use('/images',express.static(path.join(__dirname, 'images'))); // path is imp without /images express would serve the images as if they are own root path like http://localhost:4000/a.png something like this
 
 
 app.post("/uploadFile", async (req, res, next) => {
@@ -66,6 +66,23 @@ app.get('/getAllData',async(req,res,next)=>{
     console.log('data', data)
     res.status(200).json(data);
 
+})
+
+app.get('/fileDownload',(req,res,next)=>{
+    const fileName='2024-03-02T09-38-08.059Z-Resume_Qhairunnisa_Syed (4).pdf';
+    const filePath= path.join('images',fileName);
+    fs.readFile(filePath,(err,data)=>{
+        if(err){
+            next(err);
+        }
+        // res.setHeader('Cache-Control', 'no-store');     
+        res.setHeader('Content-type','application/pdf');
+
+        res.setHeader('Content-disposition', 'inline; filename=' + fileName);
+        // inline will first show the file on the browser ad will options to download;
+        // attachement will directly give popup to download
+        res.send(data)
+    })
 })
 
 app.listen(4000, () => {
