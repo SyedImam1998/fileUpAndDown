@@ -96,6 +96,19 @@ app.get('/fileDownload',(req,res,next)=>{
     file.pipe(res);
 })
 
+app.get('/fileDelete',(req,res,next)=>{
+  const fileName='2024-03-02T09-15-02.228Z-Resume_Qhairunnisa_Syed (4).pdf';
+  const filePath= path.join('images',fileName);
+  console.log('filePath', filePath) // images\2024-03-02T09-15-02.228Z-Resume_Qhairunnisa_Syed (4).pdf
+  fs.unlink(filePath,(err)=>{
+    if(err){
+      res.status(500).json("Went wrong")
+      throw (err);
+    }
+  })
+  res.json("DONE")
+})
+
 app.listen(4000, () => {
   console.info("⚙ Server running !!!");
 });
